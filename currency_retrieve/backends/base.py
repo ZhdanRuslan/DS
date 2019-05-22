@@ -1,12 +1,12 @@
-class BackendBase:
-    alias = None # class attribute
+
+class BaseBackend:
+    alias = None  # class attribute
 
     def extract(self, start_date, end_date, currencies=None):
-        pass
+        raise NotImplementedError()
 
     def transform(self):
-        pass
+        raise NotImplementedError()
 
     def load(self):
-        pass
-
+        raise NotImplementedError()
