@@ -1,12 +1,13 @@
 import datetime as dt
 
-from currency_retrieve.backends import NbuBackend
+from currency_retrieve.backends import NbuBackend, PrivatBackend
 from currency_retrieve.exceptions import InvalidBackendAlias, CurrencyRetrieveException
 
 
 class CurrencyService:
     backends = {
-        NbuBackend.alias: NbuBackend
+        NbuBackend.alias: NbuBackend,
+        PrivatBackend.alias: PrivatBackend,
     }
 
     def download(self, backend_alias, start_date, end_date, currencies=None):
@@ -27,11 +28,13 @@ start_date = end_date - dt.timedelta(days=3)
 
 try:
     data = service.download('nbu', start_date, end_date)
+    privat_data = service.download('privat', start_date, end_date)
 except InvalidBackendAlias as e:
     print(e)
 except Exception as e:
     print(e)
 else:
     print(data)
+    print(privat_data)
 finally:
     print('finally')
