@@ -14,7 +14,8 @@ ascii_lower = string.ascii_lowercase
 ascii_upper = string.ascii_uppercase
 ascii_letters = string.ascii_letters
 
-# task 1. Знайти кількість букв в тексті в розрізі: всього, верхній регістр, нижній регістр; результат записати до dict з ключами total, upper, lower
+# task 1. Знайти кількість букв в тексті в розрізі: всього, верхній регістр, нижній регістр; результат записати до
+# dict з ключами total, upper, lower
 temp2 = {
     'upper': 0,
     'lower': 0,
@@ -29,31 +30,17 @@ temp2['total'] = temp2['upper'] + temp2['lower']
 result[1] = temp2
 
 
-# task 2. Знайти кількість по кожній букві в тексті; результат записати в list, де кожний елемент - це tuple(letter, count)
+# task 2. Знайти кількість по кожній букві в тексті; результат записати в list, де кожний
+# елемент - це tuple(letter, count)
 temp2 = []
 for upper_number in range(len(ascii_lower)):
-    temp2.append((ascii_lower[upper_number], initial_text.count(ascii_lower[upper_number]
-                                                                ) + initial_text.count(ascii_upper[upper_number])))
+    temp2.append((ascii_lower[upper_number], initial_text.count(ascii_lower[upper_number]) +
+                  initial_text.count(ascii_upper[upper_number])))
 result[2] = temp2
 
 
-# init dict keys
-tmp2 = dict()
-for key in ascii_lower:
-    tmp2[key] = 0
-for val in initial_text.lower():
-    if val in tmp2:
-        tmp2[val] += 1
-print(tmp2)
-r_list = []
-
-for i in tmp2.items():
-    r_list.append(i)
-    # print('\'' + str(i) + '\''+ str(tmp2[i]))
-    # r_list.append(str(i) + str(tmp2[i]))
-print(r_list)
-
-# task 3. Сформувати list на основі list з п.2, в якому елементи відсортовані по кількості букв (від найменшої до найбільшої кількості)
+# task 3. Сформувати list на основі list з п.2, в якому елементи відсортовані по кількості букв
+# (від найменшої до найбільшої кількості)
 temp3 = copy.deepcopy(temp2)
 for upper_number in range(len(temp3)):
     key, val = temp3[upper_number]
@@ -65,37 +52,37 @@ for upper_number in range(len(temp3)):
 result[3] = temp3
 
 
-# (????) task 4. Знайти загальну кількість слів в тексті, результат записати як int
+# task 4. Знайти загальну кількість слів в тексті, результат записати як int
 temp4 = ''
-for letter in initial_text:
-    if letter not in ascii_letters + string.digits:
+for letter in initial_text.lower():
+    if letter not in ascii_lower:
         temp4 += ' '
     else:
         temp4 += letter
-result[4] = len(temp4.split())
-
+temp4 = temp4.split()
+temp4.remove('s')
+result[4] = len(temp4)
 
 # task 5. Знайти кількість чисел в тексті, результат записати як int
 temp5 = ''
+# list(range(10))
 for letter in initial_text:
-    if not letter.isdigit():
+    if letter not in '0123456789':
         temp5 += ' '
     else:
         temp5 += letter
 result[5] = len(temp5.split())
 
 
-# (???) task 6. Створити dict, де ключ - це довжина слова, а значення - це кількість слів з такою довжиною
-# 1986s - только слово или только число или слово/число?,  s - слово или ничего?,  [32] -  число/слово или только число?
+# task 6. Створити dict, де ключ - це довжина слова, а значення - це кількість слів з такою довжиною
 temp6 = dict()
-for word in temp4.split():
+for word in temp4:
     word_length = len(list(word))
     temp6[word_length] = temp6.setdefault(word_length, 0) + 1
 result[6] = temp6
 
 
 # task 7. Знайти відсоток речень, в яких зустрічається слово Python; результат записати як float (на 100 не множимо)
-# "...permanent vacation on July 12, 2018.[35]", [35] - не считаю отдельным предложением?
 temp7 = initial_text.split('.')
 temp7.pop()
 upper_number = 0
@@ -105,8 +92,9 @@ for sentence in temp7:
 result[7] = upper_number / len(temp7)
 
 
-# task 8. Знайти кількість спеціальних символів в тексті; результат записати до dict, де ключ - це спеціальний символ, а значення - кількість;
-temp8 = {}
+# task 8. Знайти кількість спеціальних символів в тексті; результат записати до dict, де ключ - це спеціальний
+# символ, а значення - кількість;
+temp8 = dict()
 for symb in initial_text:
     if symb not in ascii_letters + '0123456789':
         temp8[symb] = temp8.setdefault(symb, 0) + 1
@@ -168,14 +156,24 @@ for sentence in temp13:
 result[13] = max_python_str
 
 
-# task 14. Cтворити dict, де ключ - це слово, а значення - кількість разів, з якою слово зустрічається в тексті;
+# task 14. Cтворити dict, де ключ - це слово, а значення - кількість разів, з якою слово зустрічається в тексті
+temp14 = dict()
+for word in temp4:
+    temp14.setdefault(word, temp4.count(word))
+result[14] = temp14
 
 
+# task 15. Знайти слово, яке зустрічається найчастіше і найрідше; результат записати як tuple(tuple(word, count),
+# tuple(word, count)).
+min_num, max_num = min(temp14.values()), max(temp14.values())
+rare_word, frequent_word = '', ''
+for word, num in temp14.items():
+    if temp14[word] == min_num:
+        frequent_word = word
+    if temp14[word] == max_num:
+        rare_word = word
+result[15] = ((frequent_word, temp14[frequent_word]), (rare_word, temp14[rare_word]))
 
-# task 15. Знайти слово, яке зустрічається найчастіше і найрідше; результат записати як tuple(tuple(word, count), tuple(word, count)).
 
 for key in result.keys():
     print(key, ':', result[key])
-
-
-
